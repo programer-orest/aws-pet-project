@@ -90,7 +90,7 @@ jobs:
           image-ref: ${{ env.DockerImageName }}:sha-${{ github.sha }}
           vuln-type: 'os,library'
           format: 'table'
-          severity: 'Critical'
+          severity: 'CRITICAL'
           ignore-unfixed: true
           exit-code: '1'
 
