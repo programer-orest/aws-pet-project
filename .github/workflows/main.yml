@@ -41,6 +41,7 @@ jobs:
       - name: Run linters
         run: |
           flake8 . --extend-ignore=E203,E501,W503
+          black .
           black --check .
           isort --check-only .
 
