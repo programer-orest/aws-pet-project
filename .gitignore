@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+.Python
+env/
+venv/
+ENV/
+.venv/
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Django
+*.log
+*.pot
+*.py,cover
+db.sqlite3
+media/
+staticfiles/
+local_settings.py
+
+# Environment variables
+.env
+.env.*
+!env.example
+
+# Docker
+*.pid
+*.seed
+*.log
+docker-compose.override.yml
+.dockerignore
+
+# IDE / Editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Tests
+.coverage
+coverage.xml
+htmlcov/
+pytest_cache/
+
+# MyPy / Pyre / Pytype
+.mypy_cache/
+.dmypy.json
+.pyre/
+.pytype/
+
+# OS generated files
+.DS_Store
+Thumbs.db
