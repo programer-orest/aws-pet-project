@@ -76,7 +76,7 @@ jobs:
       - name: Build Docker Image
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./src
           file: ./src/Dockerfile
           load: true
           tags: ${{ env.DockerImageName }}:sha-${{ github.sha }}
@@ -97,7 +97,7 @@ jobs:
       - name: Docker Push
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./src
           file: ./src/Dockerfile
           push: true
           tags: ${{ env.DockerImageName }}:sha-${{ github.sha }}
