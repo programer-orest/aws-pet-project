@@ -15,7 +15,8 @@ class LoginForm(forms.Form):
         **form_kwargs(widget=forms.TextInput(attrs=widget_attrs("Username")))
     )
     password = forms.CharField(
-        **form_kwargs(widget=forms.PasswordInput(attrs=widget_attrs("Password")))
+        **form_kwargs(widget=forms.PasswordInput(
+            attrs=widget_attrs("Password")))
     )
 
     def clean(self):
@@ -43,12 +44,14 @@ class RegistrationForm(forms.Form):
     )
 
     password = forms.CharField(
-        **form_kwargs(widget=forms.PasswordInput(attrs=widget_attrs("Password")))
+        **form_kwargs(
+            widget=forms.PasswordInput(attrs=widget_attrs("Password")))
     )
 
     password_confirmation = forms.CharField(
         **form_kwargs(
-            widget=forms.PasswordInput(attrs=widget_attrs("Password confirmation"))
+            widget=forms.PasswordInput(
+                attrs=widget_attrs("Password confirmation"))
         )
     )
 

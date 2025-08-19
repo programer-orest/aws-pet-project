@@ -29,7 +29,8 @@ class AccountsTests(TestCase):
         self.assertIsInstance(response.context["form"], LoginForm)
 
     def test_register(self):
-        response = self.client.post(reverse("auth:register"), data=self.register_data)
+        response = self.client.post(reverse("auth:register"),
+                                    data=self.register_data)
         self.assertRedirects(response, "/auth/login/")
         # new user was created
         self.assertIsNotNone(User.objects.get(username="new_user"))
@@ -68,7 +69,8 @@ class AccountsTests(TestCase):
     def test_faulty_register(self):
         # change username for invalid post
         self.register_data["username"] = 65 * "X"
-        response = self.client.post(reverse("auth:register"), data=self.register_data)
+        response = self.client.post(reverse("auth:register"),
+                                    data=self.register_data)
         error_message = "Ensure this value has at most 64 characters"
         self.assertContains(response, error_message, status_code=200)
 
@@ -92,7 +94,8 @@ class LoginFormTests(TestCase):
             form.errors,
             {
                 "username": [
-                    "Ensure this value has at most 64" + " characters (it has 65)."
+                    "Ensure this value has at most 64" +
+                    " characters (it has 65)."
                 ]
             },
         )
@@ -104,7 +107,8 @@ class LoginFormTests(TestCase):
             form.errors,
             {
                 "password": [
-                    "Ensure this value has at most 64" + " characters (it has 65)."
+                    "Ensure this value has at most 64" +
+                    " characters (it has 65)."
                 ]
             },
         )
@@ -112,22 +116,26 @@ class LoginFormTests(TestCase):
     def test_no_username(self):
         form = LoginForm({"password": "test"})
         self.assertFalse(form.is_valid())
-        self.assertEqual(form.errors, {"username": ["This field is required."]})
+        self.assertEqual(form.errors, {"username":
+                         ["This field is required."]})
 
     def test_no_password(self):
         form = LoginForm({"username": "test"})
         self.assertFalse(form.is_valid())
-        self.assertEqual(form.errors, {"password": ["This field is required."]})
+        self.assertEqual(form.errors, {"password":
+                         ["This field is required."]})
 
     def test_empty_username(self):
         form = LoginForm({"username": "", "password": "test"})
         self.assertFalse(form.is_valid())
-        self.assertEqual(form.errors, {"username": ["This field is required."]})
+        self.assertEqual(form.errors, {"username":
+                         ["This field is required."]})
 
     def test_empty_password(self):
         form = LoginForm({"username": "test", "password": ""})
         self.assertFalse(form.is_valid())
-        self.assertEqual(form.errors, {"password": ["This field is required."]})
+        self.assertEqual(form.errors, {"password":
+                         ["This field is required."]})
 
 
 class RegistrationFormTests(TestCase):
@@ -159,7 +167,8 @@ class RegistrationFormTests(TestCase):
     def test_invalid_email(self):
         form = RegistrationForm(self.invalid_email)
         self.assertFalse(form.is_valid())
-        self.assertEqual(form.errors, {"email": ["Enter a valid email address."]})
+        self.assertEqual(form.errors, {"email":
+                         ["Enter a valid email address."]})
 
     def test_non_matching_passwords(self):
         form = RegistrationForm(self.non_matching_passwords)

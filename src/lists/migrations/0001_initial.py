@@ -55,7 +55,8 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("title", models.CharField(default="untitled", max_length=128)),
+                ("title", models.CharField(
+                 default="untitled", max_length=128)),
                 ("created_at", models.DateTimeField(auto_now=True)),
                 (
                     "creator",

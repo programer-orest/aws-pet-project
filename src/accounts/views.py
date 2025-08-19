@@ -10,7 +10,8 @@ def login_view(request):
         form = LoginForm(request.POST)
         if form.is_valid():
             user = authenticate(
-                username=request.POST["username"], password=request.POST["password"]
+                username=request.POST["username"],
+                password=request.POST["password"]
             )
             if user is not None:
                 if user.is_active:
@@ -37,7 +38,8 @@ def register(request):
         else:
             return render(request, "accounts/register.html", {"form": form})
     else:
-        return render(request, "accounts/register.html", {"form": RegistrationForm()})
+        return render(request, "accounts/register.html",
+                      {"form": RegistrationForm()})
 
 
 def logout_view(request):

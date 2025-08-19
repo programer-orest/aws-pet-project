@@ -85,7 +85,7 @@ DATABASES = {
         "NAME": DB_NAME,
         "USER": DB_USER,
         "PASSWORD": DB_PASSWORD,
-        "HOST": DB_HOST,  # You can use a different host if your MySQL server is on a remote machine.
+        "HOST": DB_HOST,
         "PORT": "",  # Leave this empty to use the default MySQL port (3306).
     }
 }
