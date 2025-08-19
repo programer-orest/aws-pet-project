@@ -14,15 +14,15 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # Де збирати статичні файли
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Додаткові директорії зі статикою
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, "static"),
 ]
 
 # URL, за яким статичні файли будуть доступні
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 
 
 # Quick-start development settings - unsuitable for production
@@ -56,7 +56,7 @@ INSTALLED_APPS = (
 
 MIDDLEWARE = (
     "django.middleware.security.SecurityMiddleware",
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -80,13 +80,13 @@ DB_PASSWORD = os.environ.get("DB_PASSWORD", "")
 DB_HOST = os.environ.get("DB_HOST", "")
 
 DATABASES = {
-    'default': {
-        'ENGINE': ENGINE,
-        'NAME': DB_NAME,
-        'USER': DB_USER,
-        'PASSWORD': DB_PASSWORD,
-        'HOST': DB_HOST,  # You can use a different host if your MySQL server is on a remote machine.
-        'PORT': '',  # Leave this empty to use the default MySQL port (3306).
+    "default": {
+        "ENGINE": ENGINE,
+        "NAME": DB_NAME,
+        "USER": DB_USER,
+        "PASSWORD": DB_PASSWORD,
+        "HOST": DB_HOST,  # You can use a different host if your MySQL server is on a remote machine.
+        "PORT": "",  # Leave this empty to use the default MySQL port (3306).
     }
 }
 
@@ -102,7 +102,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 
 # Login settings
