@@ -40,7 +40,7 @@ jobs:
 
       - name: Run linters
         run: |
-          flake8 .
+          flake8 . --max-line-length=88 --extend-ignore=E501,W503
           black --check .
           isort --check-only .
 
