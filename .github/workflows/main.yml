@@ -89,7 +89,7 @@ jobs:
           scan-type: image
           image-ref: ${{ env.DockerImageName }}:sha-${{ github.sha }}
           vuln-type: 'os,library'
-          format: 'Table'
+          format: 'table'
           severity: 'Critical'
           ignore-unfixed: true
           exit-code: '1'
