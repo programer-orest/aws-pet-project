@@ -49,5 +49,4 @@ def humanize_time(dt, past_="ago", future_="from now", default="just now"):
 
 @register.filter("in_seconds")
 def in_seconds(dt):
-    return int((dt.replace(tzinfo=None) -
-               datetime(1970, 1, 1)).total_seconds())
+    return int((dt.replace(tzinfo=None) - datetime(1970, 1, 1)).total_seconds())

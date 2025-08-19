@@ -15,8 +15,7 @@ def todolist(request, todolist_id):
         redirect("lists:add_todo", todolist_id=todolist_id)
 
     return render(
-        request, "lists/todolist.html",
-        {"todolist": todolist, "form": TodoForm()}
+        request, "lists/todolist.html", {"todolist": todolist, "form": TodoForm()}
     )
 
 

@@ -11,8 +11,7 @@ def form_kwargs(widget, label="", max_length=128):
 
 class TodoForm(forms.Form):
     description = forms.CharField(
-        **form_kwargs(widget=forms.TextInput(
-                      attrs=widget_attrs("Enter your todo")))
+        **form_kwargs(widget=forms.TextInput(attrs=widget_attrs("Enter your todo")))
     )
 
 
