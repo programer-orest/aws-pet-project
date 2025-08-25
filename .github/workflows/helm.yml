@@ -33,13 +33,13 @@ jobs:
         run: helm package ${{ env.CHART_PATH }} -d ./artifacts
 
       - name: Login to DockerHub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
       - name: Push Helm Chart
         run: |
-          DOCKER_USER_LOWER=$(echo "${{ secrets.DOCKER_USERNAME }}" | tr '[:upper:]' '[:lower:]')
+          DOCKER_USER_LOWER=$(echo "${{ secrets.DOCKERHUB_USERNAME }}" | tr '[:upper:]' '[:lower:]')
           FILE=$(ls ./artifacts/*.tgz | head -n1)
-          echo "Pushing $FILE to oci://docker.io/${{ secrets.DOCKER_USERNAME }}/charts"
+          echo "Pushing $FILE to oci://docker.io/${{ secrets.DOCKERHUB_USERNAME }}/charts"
           helm push $FILE oci://docker.io/$DOCKER_USER_LOWER/todoapp
 
 
