@@ -37,12 +37,14 @@ jobs:
 
 
       - name: Push Helm Chart
+        env:
+          GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}
         run: |
-          export HELM_EXPERIMENTAL_OCI=1
-          GITHUB_USER_LOWER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
           FILE=$(ls ./artifacts/*.tgz | head -n1)
-          echo "Pushing $FILE to oci://ghcr.io/${{ GITHUB_USER_LOWER }}/charts"
+          GITHUB_USER_LOWER=$(echo "$GITHUB_REPOSITORY_OWNER" | tr '[:upper:]' '[:lower:]')
+          echo "Pushing $FILE to oci://ghcr.io/$GITHUB_USER_LOWER/charts"
           helm push $FILE oci://ghcr.io/$GITHUB_USER_LOWER/charts
+
 
 
       - name: Lint Helm Chart
