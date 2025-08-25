@@ -47,7 +47,6 @@ jobs:
           helm push $FILE oci://ghcr.io/$GITHUB_USER_LOWER/charts
 
 
-
       - name: Lint Helm Chart
         run: helm lint ${{ env.CHART_PATH }}
 
@@ -55,3 +54,12 @@ jobs:
       - name: Render chart
         run: helm template test "${CHART_PATH}" >/dev/null
 
+      - name: Sanity Check
+        run: |
+          helm template todoapp ./aws-pet-project-charts/todoapp \
+            --set replicaCount=2 \
+            --set image.repository=ghcr.io/programer-orest/charts/todoapp \
+            --set image.tag=0.1.0 > rendered.yaml
+
+          grep -q "resources" rendered.yaml || echo "Warning: resources not defined"
+          grep -q "readinessProbe" rendered.yaml || echo "Warning: readinessProbe not defined"
