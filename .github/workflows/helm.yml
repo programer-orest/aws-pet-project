@@ -40,7 +40,7 @@ jobs:
           DOCKER_USER_LOWER=$(echo "${{ secrets.DOCKERHUB_USERNAME }}" | tr '[:upper:]' '[:lower:]')
           FILE=$(ls ./artifacts/*.tgz | head -n1)
           echo "Pushing $FILE to oci://docker.io/${{ secrets.DOCKERHUB_USERNAME }}/charts"
-          helm push $FILE oci://docker.io/$DOCKER_USER_LOWER/todoapp
+          helm push $FILE oci://docker.io/$DOCKER_USER_LOWER/charts
 
 
       - name: Lint Helm Chart
