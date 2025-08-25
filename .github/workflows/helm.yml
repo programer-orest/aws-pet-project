@@ -37,6 +37,7 @@ jobs:
 
       - name: Push Helm Chart
         run: |
+          export HELM_EXPERIMENTAL_OCI=1
           DOCKER_USER_LOWER=$(echo "${{ secrets.DOCKERHUB_USERNAME }}" | tr '[:upper:]' '[:lower:]')
           FILE=$(ls ./artifacts/*.tgz | head -n1)
           echo "Pushing $FILE to oci://docker.io/${{ secrets.DOCKERHUB_USERNAME }}/charts"
