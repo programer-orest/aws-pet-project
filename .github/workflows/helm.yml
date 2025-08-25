@@ -32,16 +32,17 @@ jobs:
       - name: Package Helm Chart
         run: helm package ${{ env.CHART_PATH }} -d ./artifacts
 
-      - name: Login to DockerHub
-        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+      - name: Login to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+
 
       - name: Push Helm Chart
         run: |
           export HELM_EXPERIMENTAL_OCI=1
-          DOCKER_USER_LOWER=$(echo "${{ secrets.DOCKERHUB_USERNAME }}" | tr '[:upper:]' '[:lower:]')
+          GITHUB_USER_LOWER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
           FILE=$(ls ./artifacts/*.tgz | head -n1)
-          echo "Pushing $FILE to oci://docker.io/${{ secrets.DOCKERHUB_USERNAME }}/charts"
-          helm push $FILE oci://docker.io/$DOCKER_USER_LOWER/charts
+          echo "Pushing $FILE to oci://ghcr.io/${{ GITHUB_USER_LOWER }}/charts"
+          helm push $FILE oci://ghcr.io/$GITHUB_USER_LOWER/charts
 
 
       - name: Lint Helm Chart
