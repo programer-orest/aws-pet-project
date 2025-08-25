@@ -1,0 +1,48 @@
+common:
+  namespace: mysql
+  mysqlSelector: mysql
+  mysqlLabel: mysql
+
+mysql:
+  portName: mysql
+  containerName: mysql
+  containerPort: 3306
+
+  env:
+    secrets: mysql-secret
+
+
+  image:
+    repository: mysql
+    tag: 8.0
+    pullPolicy: IfNotPresent
+
+  secret:
+    MYSQL_ROOT_PASSWORD: rootpassword
+    MYSQL_DATABASE: mydb
+    MYSQL_USER: myuser
+    MYSQL_PASSWORD: myuserpassword
+
+
+
+  service:
+    serviceName: mysql-service
+
+
+  livenessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+  readinessProbe:
+    initialDelaySeconds: 5
+    periodSeconds: 2
+    timeoutSeconds: 5
+
+  volume:
+    name: data
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 2Gi

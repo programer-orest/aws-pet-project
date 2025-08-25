@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.todoapp.pv.name}}
+spec:
+  storageClassName: {{ .Values.todoapp.pv.spec.storageClassName }}
+  persistentVolumeReclaimPolicy: {{ .Values.todoapp.pv.spec.persistentVolumeReclaimPolicy }}
+  accessModes:
+    {{- toYaml .Values.todoapp.pv.spec.accessModes | nindent 4 }}
+  capacity:
+    storage: {{ .Values.todoapp.pv.spec.capacity.storage }}
+  hostPath:
+    path: {{ .Values.todoapp.pv.spec.hostPath.path }}

@@ -1,0 +1,98 @@
+common:
+  namespace: todoapp
+  appLabel: todoapp
+  selectorLabel: todoapp
+
+todoapp:
+  replicas: 3
+  containerName: todoapp
+  containerPort: 8080
+
+
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "500m"
+    limits:
+      memory: "512Mi"
+      cpu: "1"
+
+  livenessProbe:
+    httpGet:
+      path: /api/health
+      port: 8080
+    initialDelaySeconds: 60
+    periodSeconds: 10
+  readinessProbe:
+    httpGet:
+      path: /api/ready
+      port: 8080
+    initialDelaySeconds: 5
+    periodSeconds: 10
+
+  image:
+    repository: orestprogrammer/aws-pet-project
+    tag: sha-0245e01dc6654a0019e7eec5822b46e4bdf8fb9a
+    pullPolicy: IfNotPresent
+
+  env:
+    secrets: todoapp-secret
+    configMap: todoapp-config
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+
+  secrets:
+    DB_USER: myuser
+    DB_PASSWORD: myuserpassword
+    SECRET_KEY: 2!5gm+_2#$i0y3bmi=riqu_li7v90n)d@yopj_*&46uw=0hafn
+
+
+
+
+
+  configMap:
+    DJANGO_SETTINGS_MODULE: todolist.settings
+    DB_HOST: mysql-service.mysql.svc.cluster.local
+    DB_PORT: "3306"
+    ENGINE: django.db.backends.mysql
+    DB_NAME: mydb
+
+  clusterIP:
+    port: 80
+    targetPort: 8080
+
+  hpa:
+    minReplicas: 2
+    maxReplicas: 5
+    cpu:
+      type: Utilization
+      averageUtilization: 70
+    memory:
+      type: Utilization
+      averageUtilization: 70
+
+
+  pv:
+    name: pv-storage
+
+    spec:
+      storageClassName: standard
+      persistentVolumeReclaimPolicy: Delete
+      accessModes:
+        - ReadWriteMany
+      capacity:
+        storage: 1Gi
+      hostPath:
+        path: /data/
+
+  pvc:
+    name: todoapp-pvc
+    accessModes:
+      - ReadWriteMany
+    resources:
+      requests:
+        storage: 1Gi

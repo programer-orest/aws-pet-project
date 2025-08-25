@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todoapp-deployment
+  namespace: todoapp
+  labels:
+    app: todoapp
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  replicas: 3
+  selector:
+    matchLabels:
+      app: todoapp
+  template:
+    metadata:
+      labels:
+        app: todoapp
+    spec:
+      containers:
+        - name: todoapp
+          image: orestprogrammer/aws-pet-project:sha-0245e01dc6654a0019e7eec5822b46e4bdf8fb9a
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: todoapp-storage
+              mountPath: /app/data
+            - name: todoapp-secret
+              mountPath: /app/secrets
+              readOnly: true
+            - name: todoapp-config
+              mountPath: /app/config
+              readOnly: true
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+          env:
+            - name: DJANGO_SETTINGS_MODULE
+              valueFrom:
+                configMapKeyRef:
+                  name: todoapp-config
+                  key: DJANGO_SETTINGS_MODULE
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: todoapp-config
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: todoapp-config
+                  key: DB_PORT
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: todoapp-config
+                  key: DB_NAME
+            - name: ENGINE
+              valueFrom:
+                configMapKeyRef:
+                  name: todoapp-config
+                  key: ENGINE
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: todoapp-secret
+                  key: SECRET_KEY
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: todoapp-secret
+                  key: DB_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: todoapp-secret
+                  key: DB_PASSWORD
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/ready
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+      volumes:
+        - name: todoapp-storage
+          persistentVolumeClaim:
+            claimName: todoapp-pvc
+        - name: todoapp-secret
+          secret:
+            secretName: todoapp-secret
+        - name: todoapp-config
+          configMap:
+            name: todoapp-config

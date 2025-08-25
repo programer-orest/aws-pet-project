@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: todoapp-config
+  namespace: todoapp
+data:
+  DJANGO_SETTINGS_MODULE: todolist.settings
+  DB_HOST: mysql-service.mysql.svc.cluster.local
+  DB_PORT: "3306"
+  ENGINE: django.db.backends.mysql
+  DB_NAME: mydb

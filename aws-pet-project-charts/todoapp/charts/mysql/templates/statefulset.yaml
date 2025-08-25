@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Chart.Name }}
+  namespace: {{ .Values.common.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.common.mysqlSelector }}
+  replicas: 2
+  serviceName: {{ .Values.mysql.service.serviceName}}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.common.mysqlLabel }}
+    spec:
+      containers:
+        - name: {{ .Values.mysql.containerName }}
+          image: {{ .Values.mysql.image.repository }}:{{ .Values.mysql.image.tag }}
+          imagePullPolicy: {{ .Values.mysql.image.pullPolicy }}
+          envFrom:
+            - secretRef:
+                name: {{ .Values.mysql.env.secrets }}
+          ports:
+          - name: {{ .Values.mysql.portName }}
+            containerPort: {{ .Values.mysql.containerPort }}
+          volumeMounts:
+            - name: {{ .Values.mysql.volume.name }}
+              mountPath: /var/lib/mysql
+          resources:
+            requests:
+              memory: 1Gi
+              cpu: 500m
+          livenessProbe:
+            exec:
+              command: ["mysqladmin", "ping"]
+            initialDelaySeconds: {{ .Values.mysql.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.mysql.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.mysql.livenessProbe.timeoutSeconds }}
+          readinessProbe:
+            exec:
+              command: ["mysqladmin", "ping"]
+            initialDelaySeconds: {{ .Values.mysql.readinessProbe.initialDelaySeconds}}
+            periodSeconds: {{ .Values.mysql.readinessProbe.periodSeconds}}
+            timeoutSeconds: {{ .Values.mysql.readinessProbe.timeoutSeconds}}
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ .Values.mysql.volume.name }}
+      spec:
+        accessModes:
+          {{- range .Values.mysql.volume.spec.accessModes }}
+          - {{ . }}
+          {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.mysql.volume.spec.resources.requests.storage }}
