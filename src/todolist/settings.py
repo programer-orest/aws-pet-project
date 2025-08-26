@@ -16,11 +16,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # Де збирати статичні файли
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-# Додаткові директорії зі статикою
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
-
 # URL, за яким статичні файли будуть доступні
 STATIC_URL = "/static/"
 
